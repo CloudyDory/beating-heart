@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+        /* 让父级元素的宽度和高度都充满100%，这样心才可以出现在屏幕正中间，否则会出现在屏幕上方的中间 */
+        html, body{
+            width: 100%;
+            height: 100%;
+        }
+        body{
+            background-color: pink;
+            display: flex;
+            flex-direction: row;
+            align-items: center;
+            justify-content: center;
+        }
+        .card{
+            position: relative; /* 让 label 可以绝对定位 */
+            width: 300px;
+            height: 600px;
+            display: flex; /* 让心和文字都出现在正中间 */
+            flex-direction: column; /* 让心和文字垂直排列 */
+            align-items: center;
+            justify-content: center;
+        }
+        .label{
+            position: absolute; /* 让文字脱离文档流，不占据空间 */
+            top: 0px;
+            font-size: 30px;
+            color: rgb(0, 13, 255);
+            font-weight: bold;
+        }
+        .heart{
+            width: 200px;
+            height: 200px;
+            background-color: red;
+            position: relative; /* 让伪元素相对于父级元素定位 */
+            transform: rotate(45deg); /* 旋转45度 */
+            animation: heart-beat 1.0s infinite alternate; /* 让心跳动 */
+            box-shadow: 0 0 30px red;
+        }
+        .heart::before{
+            content: "";
+            width: 200px; /* 伪元素默认是 inline（行内）级别的，行内元素不会接受 width/height，如果不设置positoin: absolute，宽和高都是0 */
+            height: 100px;
+            background-color: red;
+            position: absolute; /* 绝对定位元素被从文档流中取出，浏览器会为其创建一个可用的替代布局盒子，此时 width/height 会生效 */
+            left: 0;
+            top: -99px; /* 让正方形和半圆形重合，避免结合处出现细线 */
+            border-radius: 100px 100px 0 0;
+            box-shadow: 0 0 30px red;
+        }
+        .heart::after{
+            content: "";
+            width: 100px;
+            height: 200px;
+            background-color: red;
+            position: absolute;
+            left: -99px;
+            top: 0px;
+            border-radius: 100% 0 0 100% / 50% 0 0 50%; /* 横向 100%*width = 200px，纵向 50%*height = 100px -> 半圆，“/”前是横向radius，后是纵向radius */
+            box-shadow: 0 0 30px red;
+        }
+
+        /* 让心跳动 */
+        @keyframes heart-beat{
+            /* 如果写了25%，50%，75%等过程，会使跳动变得一卡一卡的 */
+            0%{
+                transform: rotate(45deg) scale(0.6);
+            }
+            100%{
+                transform: rotate(45deg) scale(1.4);
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <p class="label">跳动的心</p>
+        <div class="heart"></div>
+    </div>
+</body>
+</html>
